@@ -1,0 +1,2393 @@
+{
+  "format": "GPC-ANDOR-CERT-1",
+  "game": {
+    "width": 4,
+    "height": 3,
+    "k": 3
+  },
+  "root": 0,
+  "target": 1,
+  "claim": "target_not_win",
+  "root_history": [],
+  "nodes": [
+    {
+      "id": 0,
+      "kind": "OR_NOT_WIN",
+      "state": {
+        "p0": "0x0",
+        "p1": "0x0",
+        "heights": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "side": 0
+      },
+      "target": 1,
+      "move": 0,
+      "child": 1,
+      "claim": "target_not_win"
+    },
+    {
+      "id": 1,
+      "kind": "AND_NOT_WIN",
+      "state": {
+        "p0": "0x1",
+        "p1": "0x0",
+        "heights": [
+          1,
+          0,
+          0,
+          0
+        ],
+        "side": 1
+      },
+      "target": 1,
+      "children": [
+        {
+          "move": 0,
+          "child": 2
+        },
+        {
+          "move": 1,
+          "child": 62
+        },
+        {
+          "move": 2,
+          "child": 78
+        },
+        {
+          "move": 3,
+          "child": 102
+        }
+      ],
+      "claim": "target_not_win"
+    },
+    {
+      "id": 2,
+      "kind": "OR_NOT_WIN",
+      "state": {
+        "p0": "0x1",
+        "p1": "0x2",
+        "heights": [
+          2,
+          0,
+          0,
+          0
+        ],
+        "side": 0
+      },
+      "target": 1,
+      "move": 0,
+      "child": 3,
+      "claim": "target_not_win"
+    },
+    {
+      "id": 3,
+      "kind": "AND_NOT_WIN",
+      "state": {
+        "p0": "0x5",
+        "p1": "0x2",
+        "heights": [
+          3,
+          0,
+          0,
+          0
+        ],
+        "side": 1
+      },
+      "target": 1,
+      "children": [
+        {
+          "move": 1,
+          "child": 4
+        },
+        {
+          "move": 2,
+          "child": 18
+        },
+        {
+          "move": 3,
+          "child": 45
+        }
+      ],
+      "claim": "target_not_win"
+    },
+    {
+      "id": 4,
+      "kind": "OR_NOT_WIN",
+      "state": {
+        "p0": "0x5",
+        "p1": "0xa",
+        "heights": [
+          3,
+          1,
+          0,
+          0
+        ],
+        "side": 0
+      },
+      "target": 1,
+      "move": 1,
+      "child": 5,
+      "claim": "target_not_win"
+    },
+    {
+      "id": 5,
+      "kind": "AND_NOT_WIN",
+      "state": {
+        "p0": "0x15",
+        "p1": "0xa",
+        "heights": [
+          3,
+          2,
+          0,
+          0
+        ],
+        "side": 1
+      },
+      "target": 1,
+      "children": [
+        {
+          "move": 1,
+          "child": 6
+        },
+        {
+          "move": 2,
+          "child": 8
+        },
+        {
+          "move": 3,
+          "child": 16
+        }
+      ],
+      "claim": "target_not_win"
+    },
+    {
+      "id": 6,
+      "kind": "OR_NOT_WIN",
+      "state": {
+        "p0": "0x15",
+        "p1": "0x2a",
+        "heights": [
+          3,
+          3,
+          0,
+          0
+        ],
+        "side": 0
+      },
+      "target": 1,
+      "move": 2,
+      "child": 7,
+      "claim": "target_not_win"
+    },
+    {
+      "id": 7,
+      "kind": "terminal",
+      "state": {
+        "p0": "0x55",
+        "p1": "0x2a",
+        "heights": [
+          3,
+          3,
+          1,
+          0
+        ],
+        "side": 1
+      },
+      "winner": 0,
+      "claim": "target_not_win"
+    },
+    {
+      "id": 8,
+      "kind": "OR_NOT_WIN",
+      "state": {
+        "p0": "0x15",
+        "p1": "0x4a",
+        "heights": [
+          3,
+          2,
+          1,
+          0
+        ],
+        "side": 0
+      },
+      "target": 1,
+      "move": 3,
+      "child": 9,
+      "claim": "target_not_win"
+    },
+    {
+      "id": 9,
+      "kind": "AND_NOT_WIN",
+      "state": {
+        "p0": "0x215",
+        "p1": "0x4a",
+        "heights": [
+          3,
+          2,
+          1,
+          1
+        ],
+        "side": 1
+      },
+      "target": 1,
+      "children": [
+        {
+          "move": 1,
+          "child": 10
+        },
+        {
+          "move": 2,
+          "child": 12
+        },
+        {
+          "move": 3,
+          "child": 14
+        }
+      ],
+      "claim": "target_not_win"
+    },
+    {
+      "id": 10,
+      "kind": "OR_NOT_WIN",
+      "state": {
+        "p0": "0x215",
+        "p1": "0x6a",
+        "heights": [
+          3,
+          3,
+          1,
+          1
+        ],
+        "side": 0
+      },
+      "target": 1,
+      "move": 2,
+      "child": 11,
+      "claim": "target_not_win"
+    },
+    {
+      "id": 11,
+      "kind": "macro_double_opponent_threats",
+      "state": {
+        "p0": "0x295",
+        "p1": "0x6a",
+        "heights": [
+          3,
+          3,
+          2,
+          1
+        ],
+        "side": 1
+      },
+      "target": 1,
+      "winning_columns": [
+        2,
+        3
+      ],
+      "claim": "target_not_win"
+    },
+    {
+      "id": 12,
+      "kind": "OR_NOT_WIN",
+      "state": {
+        "p0": "0x215",
+        "p1": "0xca",
+        "heights": [
+          3,
+          2,
+          2,
+          1
+        ],
+        "side": 0
+      },
+      "target": 1,
+      "move": 2,
+      "child": 13,
+      "claim": "target_not_win"
+    },
+    {
+      "id": 13,
+      "kind": "terminal",
+      "state": {
+        "p0": "0x315",
+        "p1": "0xca",
+        "heights": [
+          3,
+          2,
+          3,
+          1
+        ],
+        "side": 1
+      },
+      "winner": 0,
+      "claim": "target_not_win"
+    },
+    {
+      "id": 14,
+      "kind": "OR_NOT_WIN",
+      "state": {
+        "p0": "0x215",
+        "p1": "0x44a",
+        "heights": [
+          3,
+          2,
+          1,
+          2
+        ],
+        "side": 0
+      },
+      "target": 1,
+      "move": 1,
+      "child": 15,
+      "claim": "target_not_win"
+    },
+    {
+      "id": 15,
+      "kind": "macro_same_column_ladder",
+      "state": {
+        "p0": "0x235",
+        "p1": "0x44a",
+        "heights": [
+          3,
+          3,
+          1,
+          2
+        ],
+        "side": 1
+      },
+      "target": 1,
+      "blocking_column": 2,
+      "next_winning_column": 2,
+      "claim": "target_not_win"
+    },
+    {
+      "id": 16,
+      "kind": "OR_NOT_WIN",
+      "state": {
+        "p0": "0x15",
+        "p1": "0x20a",
+        "heights": [
+          3,
+          2,
+          0,
+          1
+        ],
+        "side": 0
+      },
+      "target": 1,
+      "move": 2,
+      "child": 17,
+      "claim": "target_not_win"
+    },
+    {
+      "id": 17,
+      "kind": "terminal",
+      "state": {
+        "p0": "0x55",
+        "p1": "0x20a",
+        "heights": [
+          3,
+          2,
+          1,
+          1
+        ],
+        "side": 1
+      },
+      "winner": 0,
+      "claim": "target_not_win"
+    },
+    {
+      "id": 18,
+      "kind": "OR_NOT_WIN",
+      "state": {
+        "p0": "0x5",
+        "p1": "0x42",
+        "heights": [
+          3,
+          0,
+          1,
+          0
+        ],
+        "side": 0
+      },
+      "target": 1,
+      "move": 2,
+      "child": 19,
+      "claim": "target_not_win"
+    },
+    {
+      "id": 19,
+      "kind": "AND_NOT_WIN",
+      "state": {
+        "p0": "0x85",
+        "p1": "0x42",
+        "heights": [
+          3,
+          0,
+          2,
+          0
+        ],
+        "side": 1
+      },
+      "target": 1,
+      "children": [
+        {
+          "move": 1,
+          "child": 20
+        },
+        {
+          "move": 2,
+          "child": 28
+        },
+        {
+          "move": 3,
+          "child": 37
+        }
+      ],
+      "claim": "target_not_win"
+    },
+    {
+      "id": 20,
+      "kind": "OR_NOT_WIN",
+      "state": {
+        "p0": "0x85",
+        "p1": "0x4a",
+        "heights": [
+          3,
+          1,
+          2,
+          0
+        ],
+        "side": 0
+      },
+      "target": 1,
+      "move": 3,
+      "child": 21,
+      "claim": "target_not_win"
+    },
+    {
+      "id": 21,
+      "kind": "AND_NOT_WIN",
+      "state": {
+        "p0": "0x285",
+        "p1": "0x4a",
+        "heights": [
+          3,
+          1,
+          2,
+          1
+        ],
+        "side": 1
+      },
+      "target": 1,
+      "children": [
+        {
+          "move": 1,
+          "child": 22
+        },
+        {
+          "move": 2,
+          "child": 24
+        },
+        {
+          "move": 3,
+          "child": 26
+        }
+      ],
+      "claim": "target_not_win"
+    },
+    {
+      "id": 22,
+      "kind": "OR_NOT_WIN",
+      "state": {
+        "p0": "0x285",
+        "p1": "0x5a",
+        "heights": [
+          3,
+          2,
+          2,
+          1
+        ],
+        "side": 0
+      },
+      "target": 1,
+      "move": 1,
+      "child": 23,
+      "claim": "target_not_win"
+    },
+    {
+      "id": 23,
+      "kind": "terminal",
+      "state": {
+        "p0": "0x2a5",
+        "p1": "0x5a",
+        "heights": [
+          3,
+          3,
+          2,
+          1
+        ],
+        "side": 1
+      },
+      "winner": 0,
+      "claim": "target_not_win"
+    },
+    {
+      "id": 24,
+      "kind": "OR_NOT_WIN",
+      "state": {
+        "p0": "0x285",
+        "p1": "0x14a",
+        "heights": [
+          3,
+          1,
+          3,
+          1
+        ],
+        "side": 0
+      },
+      "target": 1,
+      "move": 1,
+      "child": 25,
+      "claim": "target_not_win"
+    },
+    {
+      "id": 25,
+      "kind": "macro_double_opponent_threats",
+      "state": {
+        "p0": "0x295",
+        "p1": "0x14a",
+        "heights": [
+          3,
+          2,
+          3,
+          1
+        ],
+        "side": 1
+      },
+      "target": 1,
+      "winning_columns": [
+        1,
+        3
+      ],
+      "claim": "target_not_win"
+    },
+    {
+      "id": 26,
+      "kind": "OR_NOT_WIN",
+      "state": {
+        "p0": "0x285",
+        "p1": "0x44a",
+        "heights": [
+          3,
+          1,
+          2,
+          2
+        ],
+        "side": 0
+      },
+      "target": 1,
+      "move": 1,
+      "child": 27,
+      "claim": "target_not_win"
+    },
+    {
+      "id": 27,
+      "kind": "macro_double_opponent_threats",
+      "state": {
+        "p0": "0x295",
+        "p1": "0x44a",
+        "heights": [
+          3,
+          2,
+          2,
+          2
+        ],
+        "side": 1
+      },
+      "target": 1,
+      "winning_columns": [
+        1,
+        2
+      ],
+      "claim": "target_not_win"
+    },
+    {
+      "id": 28,
+      "kind": "OR_NOT_WIN",
+      "state": {
+        "p0": "0x85",
+        "p1": "0x142",
+        "heights": [
+          3,
+          0,
+          3,
+          0
+        ],
+        "side": 0
+      },
+      "target": 1,
+      "move": 1,
+      "child": 29,
+      "claim": "target_not_win"
+    },
+    {
+      "id": 29,
+      "kind": "AND_NOT_WIN",
+      "state": {
+        "p0": "0x8d",
+        "p1": "0x142",
+        "heights": [
+          3,
+          1,
+          3,
+          0
+        ],
+        "side": 1
+      },
+      "target": 1,
+      "children": [
+        {
+          "move": 1,
+          "child": 30
+        },
+        {
+          "move": 3,
+          "child": 35
+        }
+      ],
+      "claim": "target_not_win"
+    },
+    {
+      "id": 30,
+      "kind": "OR_NOT_WIN",
+      "state": {
+        "p0": "0x8d",
+        "p1": "0x152",
+        "heights": [
+          3,
+          2,
+          3,
+          0
+        ],
+        "side": 0
+      },
+      "target": 1,
+      "move": 1,
+      "child": 31,
+      "claim": "target_not_win"
+    },
+    {
+      "id": 31,
+      "kind": "AND_NOT_WIN",
+      "state": {
+        "p0": "0xad",
+        "p1": "0x152",
+        "heights": [
+          3,
+          3,
+          3,
+          0
+        ],
+        "side": 1
+      },
+      "target": 1,
+      "children": [
+        {
+          "move": 3,
+          "child": 32
+        }
+      ],
+      "claim": "target_not_win"
+    },
+    {
+      "id": 32,
+      "kind": "OR_NOT_WIN",
+      "state": {
+        "p0": "0xad",
+        "p1": "0x352",
+        "heights": [
+          3,
+          3,
+          3,
+          1
+        ],
+        "side": 0
+      },
+      "target": 1,
+      "move": 3,
+      "child": 33,
+      "claim": "target_not_win"
+    },
+    {
+      "id": 33,
+      "kind": "AND_NOT_WIN",
+      "state": {
+        "p0": "0x4ad",
+        "p1": "0x352",
+        "heights": [
+          3,
+          3,
+          3,
+          2
+        ],
+        "side": 1
+      },
+      "target": 1,
+      "children": [
+        {
+          "move": 3,
+          "child": 34
+        }
+      ],
+      "claim": "target_not_win"
+    },
+    {
+      "id": 34,
+      "kind": "terminal",
+      "state": {
+        "p0": "0x4ad",
+        "p1": "0xb52",
+        "heights": [
+          3,
+          3,
+          3,
+          3
+        ],
+        "side": 0
+      },
+      "winner": null,
+      "claim": "target_not_win"
+    },
+    {
+      "id": 35,
+      "kind": "OR_NOT_WIN",
+      "state": {
+        "p0": "0x8d",
+        "p1": "0x342",
+        "heights": [
+          3,
+          1,
+          3,
+          1
+        ],
+        "side": 0
+      },
+      "target": 1,
+      "move": 1,
+      "child": 36,
+      "claim": "target_not_win"
+    },
+    {
+      "id": 36,
+      "kind": "macro_double_opponent_threats",
+      "state": {
+        "p0": "0x9d",
+        "p1": "0x342",
+        "heights": [
+          3,
+          2,
+          3,
+          1
+        ],
+        "side": 1
+      },
+      "target": 1,
+      "winning_columns": [
+        1,
+        3
+      ],
+      "claim": "target_not_win"
+    },
+    {
+      "id": 37,
+      "kind": "OR_NOT_WIN",
+      "state": {
+        "p0": "0x85",
+        "p1": "0x242",
+        "heights": [
+          3,
+          0,
+          2,
+          1
+        ],
+        "side": 0
+      },
+      "target": 1,
+      "move": 1,
+      "child": 38,
+      "claim": "target_not_win"
+    },
+    {
+      "id": 38,
+      "kind": "AND_NOT_WIN",
+      "state": {
+        "p0": "0x8d",
+        "p1": "0x242",
+        "heights": [
+          3,
+          1,
+          2,
+          1
+        ],
+        "side": 1
+      },
+      "target": 1,
+      "children": [
+        {
+          "move": 1,
+          "child": 39
+        },
+        {
+          "move": 2,
+          "child": 35
+        },
+        {
+          "move": 3,
+          "child": 43
+        }
+      ],
+      "claim": "target_not_win"
+    },
+    {
+      "id": 39,
+      "kind": "OR_NOT_WIN",
+      "state": {
+        "p0": "0x8d",
+        "p1": "0x252",
+        "heights": [
+          3,
+          2,
+          2,
+          1
+        ],
+        "side": 0
+      },
+      "target": 1,
+      "move": 1,
+      "child": 40,
+      "claim": "target_not_win"
+    },
+    {
+      "id": 40,
+      "kind": "AND_NOT_WIN",
+      "state": {
+        "p0": "0xad",
+        "p1": "0x252",
+        "heights": [
+          3,
+          3,
+          2,
+          1
+        ],
+        "side": 1
+      },
+      "target": 1,
+      "children": [
+        {
+          "move": 2,
+          "child": 32
+        },
+        {
+          "move": 3,
+          "child": 41
+        }
+      ],
+      "claim": "target_not_win"
+    },
+    {
+      "id": 41,
+      "kind": "OR_NOT_WIN",
+      "state": {
+        "p0": "0xad",
+        "p1": "0x652",
+        "heights": [
+          3,
+          3,
+          2,
+          2
+        ],
+        "side": 0
+      },
+      "target": 1,
+      "move": 2,
+      "child": 42,
+      "claim": "target_not_win"
+    },
+    {
+      "id": 42,
+      "kind": "terminal",
+      "state": {
+        "p0": "0x1ad",
+        "p1": "0x652",
+        "heights": [
+          3,
+          3,
+          3,
+          2
+        ],
+        "side": 1
+      },
+      "winner": 0,
+      "claim": "target_not_win"
+    },
+    {
+      "id": 43,
+      "kind": "OR_NOT_WIN",
+      "state": {
+        "p0": "0x8d",
+        "p1": "0x642",
+        "heights": [
+          3,
+          1,
+          2,
+          2
+        ],
+        "side": 0
+      },
+      "target": 1,
+      "move": 3,
+      "child": 44,
+      "claim": "target_not_win"
+    },
+    {
+      "id": 44,
+      "kind": "terminal",
+      "state": {
+        "p0": "0x88d",
+        "p1": "0x642",
+        "heights": [
+          3,
+          1,
+          2,
+          3
+        ],
+        "side": 1
+      },
+      "winner": 0,
+      "claim": "target_not_win"
+    },
+    {
+      "id": 45,
+      "kind": "OR_NOT_WIN",
+      "state": {
+        "p0": "0x5",
+        "p1": "0x202",
+        "heights": [
+          3,
+          0,
+          0,
+          1
+        ],
+        "side": 0
+      },
+      "target": 1,
+      "move": 1,
+      "child": 46,
+      "claim": "target_not_win"
+    },
+    {
+      "id": 46,
+      "kind": "AND_NOT_WIN",
+      "state": {
+        "p0": "0xd",
+        "p1": "0x202",
+        "heights": [
+          3,
+          1,
+          0,
+          1
+        ],
+        "side": 1
+      },
+      "target": 1,
+      "children": [
+        {
+          "move": 1,
+          "child": 47
+        },
+        {
+          "move": 2,
+          "child": 52
+        },
+        {
+          "move": 3,
+          "child": 60
+        }
+      ],
+      "claim": "target_not_win"
+    },
+    {
+      "id": 47,
+      "kind": "OR_NOT_WIN",
+      "state": {
+        "p0": "0xd",
+        "p1": "0x212",
+        "heights": [
+          3,
+          2,
+          0,
+          1
+        ],
+        "side": 0
+      },
+      "target": 1,
+      "move": 1,
+      "child": 48,
+      "claim": "target_not_win"
+    },
+    {
+      "id": 48,
+      "kind": "AND_NOT_WIN",
+      "state": {
+        "p0": "0x2d",
+        "p1": "0x212",
+        "heights": [
+          3,
+          3,
+          0,
+          1
+        ],
+        "side": 1
+      },
+      "target": 1,
+      "children": [
+        {
+          "move": 2,
+          "child": 49
+        },
+        {
+          "move": 3,
+          "child": 50
+        }
+      ],
+      "claim": "target_not_win"
+    },
+    {
+      "id": 49,
+      "kind": "OR_NOT_WIN",
+      "state": {
+        "p0": "0x2d",
+        "p1": "0x252",
+        "heights": [
+          3,
+          3,
+          1,
+          1
+        ],
+        "side": 0
+      },
+      "target": 1,
+      "move": 2,
+      "child": 40,
+      "claim": "target_not_win"
+    },
+    {
+      "id": 50,
+      "kind": "OR_NOT_WIN",
+      "state": {
+        "p0": "0x2d",
+        "p1": "0x612",
+        "heights": [
+          3,
+          3,
+          0,
+          2
+        ],
+        "side": 0
+      },
+      "target": 1,
+      "move": 2,
+      "child": 51,
+      "claim": "target_not_win"
+    },
+    {
+      "id": 51,
+      "kind": "terminal",
+      "state": {
+        "p0": "0x6d",
+        "p1": "0x612",
+        "heights": [
+          3,
+          3,
+          1,
+          2
+        ],
+        "side": 1
+      },
+      "winner": 0,
+      "claim": "target_not_win"
+    },
+    {
+      "id": 52,
+      "kind": "OR_NOT_WIN",
+      "state": {
+        "p0": "0xd",
+        "p1": "0x242",
+        "heights": [
+          3,
+          1,
+          1,
+          1
+        ],
+        "side": 0
+      },
+      "target": 1,
+      "move": 1,
+      "child": 53,
+      "claim": "target_not_win"
+    },
+    {
+      "id": 53,
+      "kind": "AND_NOT_WIN",
+      "state": {
+        "p0": "0x1d",
+        "p1": "0x242",
+        "heights": [
+          3,
+          2,
+          1,
+          1
+        ],
+        "side": 1
+      },
+      "target": 1,
+      "children": [
+        {
+          "move": 1,
+          "child": 54
+        },
+        {
+          "move": 2,
+          "child": 56
+        },
+        {
+          "move": 3,
+          "child": 58
+        }
+      ],
+      "claim": "target_not_win"
+    },
+    {
+      "id": 54,
+      "kind": "OR_NOT_WIN",
+      "state": {
+        "p0": "0x1d",
+        "p1": "0x262",
+        "heights": [
+          3,
+          3,
+          1,
+          1
+        ],
+        "side": 0
+      },
+      "target": 1,
+      "move": 2,
+      "child": 55,
+      "claim": "target_not_win"
+    },
+    {
+      "id": 55,
+      "kind": "macro_double_opponent_threats",
+      "state": {
+        "p0": "0x9d",
+        "p1": "0x262",
+        "heights": [
+          3,
+          3,
+          2,
+          1
+        ],
+        "side": 1
+      },
+      "target": 1,
+      "winning_columns": [
+        2,
+        3
+      ],
+      "claim": "target_not_win"
+    },
+    {
+      "id": 56,
+      "kind": "OR_NOT_WIN",
+      "state": {
+        "p0": "0x1d",
+        "p1": "0x2c2",
+        "heights": [
+          3,
+          2,
+          2,
+          1
+        ],
+        "side": 0
+      },
+      "target": 1,
+      "move": 1,
+      "child": 57,
+      "claim": "target_not_win"
+    },
+    {
+      "id": 57,
+      "kind": "terminal",
+      "state": {
+        "p0": "0x3d",
+        "p1": "0x2c2",
+        "heights": [
+          3,
+          3,
+          2,
+          1
+        ],
+        "side": 1
+      },
+      "winner": 0,
+      "claim": "target_not_win"
+    },
+    {
+      "id": 58,
+      "kind": "OR_NOT_WIN",
+      "state": {
+        "p0": "0x1d",
+        "p1": "0x642",
+        "heights": [
+          3,
+          2,
+          1,
+          2
+        ],
+        "side": 0
+      },
+      "target": 1,
+      "move": 1,
+      "child": 59,
+      "claim": "target_not_win"
+    },
+    {
+      "id": 59,
+      "kind": "terminal",
+      "state": {
+        "p0": "0x3d",
+        "p1": "0x642",
+        "heights": [
+          3,
+          3,
+          1,
+          2
+        ],
+        "side": 1
+      },
+      "winner": 0,
+      "claim": "target_not_win"
+    },
+    {
+      "id": 60,
+      "kind": "OR_NOT_WIN",
+      "state": {
+        "p0": "0xd",
+        "p1": "0x602",
+        "heights": [
+          3,
+          1,
+          0,
+          2
+        ],
+        "side": 0
+      },
+      "target": 1,
+      "move": 2,
+      "child": 61,
+      "claim": "target_not_win"
+    },
+    {
+      "id": 61,
+      "kind": "terminal",
+      "state": {
+        "p0": "0x4d",
+        "p1": "0x602",
+        "heights": [
+          3,
+          1,
+          1,
+          2
+        ],
+        "side": 1
+      },
+      "winner": 0,
+      "claim": "target_not_win"
+    },
+    {
+      "id": 62,
+      "kind": "OR_NOT_WIN",
+      "state": {
+        "p0": "0x1",
+        "p1": "0x8",
+        "heights": [
+          1,
+          1,
+          0,
+          0
+        ],
+        "side": 0
+      },
+      "target": 1,
+      "move": 0,
+      "child": 63,
+      "claim": "target_not_win"
+    },
+    {
+      "id": 63,
+      "kind": "AND_NOT_WIN",
+      "state": {
+        "p0": "0x3",
+        "p1": "0x8",
+        "heights": [
+          2,
+          1,
+          0,
+          0
+        ],
+        "side": 1
+      },
+      "target": 1,
+      "children": [
+        {
+          "move": 0,
+          "child": 64
+        },
+        {
+          "move": 1,
+          "child": 72
+        },
+        {
+          "move": 2,
+          "child": 74
+        },
+        {
+          "move": 3,
+          "child": 76
+        }
+      ],
+      "claim": "target_not_win"
+    },
+    {
+      "id": 64,
+      "kind": "OR_NOT_WIN",
+      "state": {
+        "p0": "0x3",
+        "p1": "0xc",
+        "heights": [
+          3,
+          1,
+          0,
+          0
+        ],
+        "side": 0
+      },
+      "target": 1,
+      "move": 1,
+      "child": 65,
+      "claim": "target_not_win"
+    },
+    {
+      "id": 65,
+      "kind": "AND_NOT_WIN",
+      "state": {
+        "p0": "0x13",
+        "p1": "0xc",
+        "heights": [
+          3,
+          2,
+          0,
+          0
+        ],
+        "side": 1
+      },
+      "target": 1,
+      "children": [
+        {
+          "move": 1,
+          "child": 66
+        },
+        {
+          "move": 2,
+          "child": 68
+        },
+        {
+          "move": 3,
+          "child": 70
+        }
+      ],
+      "claim": "target_not_win"
+    },
+    {
+      "id": 66,
+      "kind": "OR_NOT_WIN",
+      "state": {
+        "p0": "0x13",
+        "p1": "0x2c",
+        "heights": [
+          3,
+          3,
+          0,
+          0
+        ],
+        "side": 0
+      },
+      "target": 1,
+      "move": 2,
+      "child": 67,
+      "claim": "target_not_win"
+    },
+    {
+      "id": 67,
+      "kind": "macro_same_column_ladder",
+      "state": {
+        "p0": "0x53",
+        "p1": "0x2c",
+        "heights": [
+          3,
+          3,
+          1,
+          0
+        ],
+        "side": 1
+      },
+      "target": 1,
+      "blocking_column": 2,
+      "next_winning_column": 2,
+      "claim": "target_not_win"
+    },
+    {
+      "id": 68,
+      "kind": "OR_NOT_WIN",
+      "state": {
+        "p0": "0x13",
+        "p1": "0x4c",
+        "heights": [
+          3,
+          2,
+          1,
+          0
+        ],
+        "side": 0
+      },
+      "target": 1,
+      "move": 2,
+      "child": 69,
+      "claim": "target_not_win"
+    },
+    {
+      "id": 69,
+      "kind": "terminal",
+      "state": {
+        "p0": "0x93",
+        "p1": "0x4c",
+        "heights": [
+          3,
+          2,
+          2,
+          0
+        ],
+        "side": 1
+      },
+      "winner": 0,
+      "claim": "target_not_win"
+    },
+    {
+      "id": 70,
+      "kind": "OR_NOT_WIN",
+      "state": {
+        "p0": "0x13",
+        "p1": "0x20c",
+        "heights": [
+          3,
+          2,
+          0,
+          1
+        ],
+        "side": 0
+      },
+      "target": 1,
+      "move": 2,
+      "child": 71,
+      "claim": "target_not_win"
+    },
+    {
+      "id": 71,
+      "kind": "macro_same_column_ladder",
+      "state": {
+        "p0": "0x53",
+        "p1": "0x20c",
+        "heights": [
+          3,
+          2,
+          1,
+          1
+        ],
+        "side": 1
+      },
+      "target": 1,
+      "blocking_column": 2,
+      "next_winning_column": 2,
+      "claim": "target_not_win"
+    },
+    {
+      "id": 72,
+      "kind": "OR_NOT_WIN",
+      "state": {
+        "p0": "0x3",
+        "p1": "0x18",
+        "heights": [
+          2,
+          2,
+          0,
+          0
+        ],
+        "side": 0
+      },
+      "target": 1,
+      "move": 0,
+      "child": 73,
+      "claim": "target_not_win"
+    },
+    {
+      "id": 73,
+      "kind": "terminal",
+      "state": {
+        "p0": "0x7",
+        "p1": "0x18",
+        "heights": [
+          3,
+          2,
+          0,
+          0
+        ],
+        "side": 1
+      },
+      "winner": 0,
+      "claim": "target_not_win"
+    },
+    {
+      "id": 74,
+      "kind": "OR_NOT_WIN",
+      "state": {
+        "p0": "0x3",
+        "p1": "0x48",
+        "heights": [
+          2,
+          1,
+          1,
+          0
+        ],
+        "side": 0
+      },
+      "target": 1,
+      "move": 0,
+      "child": 75,
+      "claim": "target_not_win"
+    },
+    {
+      "id": 75,
+      "kind": "terminal",
+      "state": {
+        "p0": "0x7",
+        "p1": "0x48",
+        "heights": [
+          3,
+          1,
+          1,
+          0
+        ],
+        "side": 1
+      },
+      "winner": 0,
+      "claim": "target_not_win"
+    },
+    {
+      "id": 76,
+      "kind": "OR_NOT_WIN",
+      "state": {
+        "p0": "0x3",
+        "p1": "0x208",
+        "heights": [
+          2,
+          1,
+          0,
+          1
+        ],
+        "side": 0
+      },
+      "target": 1,
+      "move": 0,
+      "child": 77,
+      "claim": "target_not_win"
+    },
+    {
+      "id": 77,
+      "kind": "terminal",
+      "state": {
+        "p0": "0x7",
+        "p1": "0x208",
+        "heights": [
+          3,
+          1,
+          0,
+          1
+        ],
+        "side": 1
+      },
+      "winner": 0,
+      "claim": "target_not_win"
+    },
+    {
+      "id": 78,
+      "kind": "OR_NOT_WIN",
+      "state": {
+        "p0": "0x1",
+        "p1": "0x40",
+        "heights": [
+          1,
+          0,
+          1,
+          0
+        ],
+        "side": 0
+      },
+      "target": 1,
+      "move": 0,
+      "child": 79,
+      "claim": "target_not_win"
+    },
+    {
+      "id": 79,
+      "kind": "AND_NOT_WIN",
+      "state": {
+        "p0": "0x3",
+        "p1": "0x40",
+        "heights": [
+          2,
+          0,
+          1,
+          0
+        ],
+        "side": 1
+      },
+      "target": 1,
+      "children": [
+        {
+          "move": 0,
+          "child": 80
+        },
+        {
+          "move": 1,
+          "child": 74
+        },
+        {
+          "move": 2,
+          "child": 98
+        },
+        {
+          "move": 3,
+          "child": 100
+        }
+      ],
+      "claim": "target_not_win"
+    },
+    {
+      "id": 80,
+      "kind": "OR_NOT_WIN",
+      "state": {
+        "p0": "0x3",
+        "p1": "0x44",
+        "heights": [
+          3,
+          0,
+          1,
+          0
+        ],
+        "side": 0
+      },
+      "target": 1,
+      "move": 3,
+      "child": 81,
+      "claim": "target_not_win"
+    },
+    {
+      "id": 81,
+      "kind": "AND_NOT_WIN",
+      "state": {
+        "p0": "0x203",
+        "p1": "0x44",
+        "heights": [
+          3,
+          0,
+          1,
+          1
+        ],
+        "side": 1
+      },
+      "target": 1,
+      "children": [
+        {
+          "move": 1,
+          "child": 82
+        },
+        {
+          "move": 2,
+          "child": 84
+        },
+        {
+          "move": 3,
+          "child": 90
+        }
+      ],
+      "claim": "target_not_win"
+    },
+    {
+      "id": 82,
+      "kind": "OR_NOT_WIN",
+      "state": {
+        "p0": "0x203",
+        "p1": "0x4c",
+        "heights": [
+          3,
+          1,
+          1,
+          1
+        ],
+        "side": 0
+      },
+      "target": 1,
+      "move": 1,
+      "child": 83,
+      "claim": "target_not_win"
+    },
+    {
+      "id": 83,
+      "kind": "macro_same_column_ladder",
+      "state": {
+        "p0": "0x213",
+        "p1": "0x4c",
+        "heights": [
+          3,
+          2,
+          1,
+          1
+        ],
+        "side": 1
+      },
+      "target": 1,
+      "blocking_column": 2,
+      "next_winning_column": 2,
+      "claim": "target_not_win"
+    },
+    {
+      "id": 84,
+      "kind": "OR_NOT_WIN",
+      "state": {
+        "p0": "0x203",
+        "p1": "0xc4",
+        "heights": [
+          3,
+          0,
+          2,
+          1
+        ],
+        "side": 0
+      },
+      "target": 1,
+      "move": 2,
+      "child": 85,
+      "claim": "target_not_win"
+    },
+    {
+      "id": 85,
+      "kind": "AND_NOT_WIN",
+      "state": {
+        "p0": "0x303",
+        "p1": "0xc4",
+        "heights": [
+          3,
+          0,
+          3,
+          1
+        ],
+        "side": 1
+      },
+      "target": 1,
+      "children": [
+        {
+          "move": 1,
+          "child": 86
+        },
+        {
+          "move": 3,
+          "child": 88
+        }
+      ],
+      "claim": "target_not_win"
+    },
+    {
+      "id": 86,
+      "kind": "OR_NOT_WIN",
+      "state": {
+        "p0": "0x303",
+        "p1": "0xcc",
+        "heights": [
+          3,
+          1,
+          3,
+          1
+        ],
+        "side": 0
+      },
+      "target": 1,
+      "move": 1,
+      "child": 87,
+      "claim": "target_not_win"
+    },
+    {
+      "id": 87,
+      "kind": "terminal",
+      "state": {
+        "p0": "0x313",
+        "p1": "0xcc",
+        "heights": [
+          3,
+          2,
+          3,
+          1
+        ],
+        "side": 1
+      },
+      "winner": 0,
+      "claim": "target_not_win"
+    },
+    {
+      "id": 88,
+      "kind": "OR_NOT_WIN",
+      "state": {
+        "p0": "0x303",
+        "p1": "0x4c4",
+        "heights": [
+          3,
+          0,
+          3,
+          2
+        ],
+        "side": 0
+      },
+      "target": 1,
+      "move": 3,
+      "child": 89,
+      "claim": "target_not_win"
+    },
+    {
+      "id": 89,
+      "kind": "macro_no_safe_reply",
+      "state": {
+        "p0": "0xb03",
+        "p1": "0x4c4",
+        "heights": [
+          3,
+          0,
+          3,
+          3
+        ],
+        "side": 1
+      },
+      "target": 1,
+      "claim": "target_not_win"
+    },
+    {
+      "id": 90,
+      "kind": "OR_NOT_WIN",
+      "state": {
+        "p0": "0x203",
+        "p1": "0x444",
+        "heights": [
+          3,
+          0,
+          1,
+          2
+        ],
+        "side": 0
+      },
+      "target": 1,
+      "move": 2,
+      "child": 91,
+      "claim": "target_not_win"
+    },
+    {
+      "id": 91,
+      "kind": "AND_NOT_WIN",
+      "state": {
+        "p0": "0x283",
+        "p1": "0x444",
+        "heights": [
+          3,
+          0,
+          2,
+          2
+        ],
+        "side": 1
+      },
+      "target": 1,
+      "children": [
+        {
+          "move": 1,
+          "child": 92
+        },
+        {
+          "move": 2,
+          "child": 94
+        },
+        {
+          "move": 3,
+          "child": 96
+        }
+      ],
+      "claim": "target_not_win"
+    },
+    {
+      "id": 92,
+      "kind": "OR_NOT_WIN",
+      "state": {
+        "p0": "0x283",
+        "p1": "0x44c",
+        "heights": [
+          3,
+          1,
+          2,
+          2
+        ],
+        "side": 0
+      },
+      "target": 1,
+      "move": 1,
+      "child": 93,
+      "claim": "target_not_win"
+    },
+    {
+      "id": 93,
+      "kind": "terminal",
+      "state": {
+        "p0": "0x293",
+        "p1": "0x44c",
+        "heights": [
+          3,
+          2,
+          2,
+          2
+        ],
+        "side": 1
+      },
+      "winner": 0,
+      "claim": "target_not_win"
+    },
+    {
+      "id": 94,
+      "kind": "OR_NOT_WIN",
+      "state": {
+        "p0": "0x283",
+        "p1": "0x544",
+        "heights": [
+          3,
+          0,
+          3,
+          2
+        ],
+        "side": 0
+      },
+      "target": 1,
+      "move": 3,
+      "child": 95,
+      "claim": "target_not_win"
+    },
+    {
+      "id": 95,
+      "kind": "macro_same_column_ladder",
+      "state": {
+        "p0": "0xa83",
+        "p1": "0x544",
+        "heights": [
+          3,
+          0,
+          3,
+          3
+        ],
+        "side": 1
+      },
+      "target": 1,
+      "blocking_column": 1,
+      "next_winning_column": 1,
+      "claim": "target_not_win"
+    },
+    {
+      "id": 96,
+      "kind": "OR_NOT_WIN",
+      "state": {
+        "p0": "0x283",
+        "p1": "0xc44",
+        "heights": [
+          3,
+          0,
+          2,
+          3
+        ],
+        "side": 0
+      },
+      "target": 1,
+      "move": 2,
+      "child": 97,
+      "claim": "target_not_win"
+    },
+    {
+      "id": 97,
+      "kind": "macro_no_safe_reply",
+      "state": {
+        "p0": "0x383",
+        "p1": "0xc44",
+        "heights": [
+          3,
+          0,
+          3,
+          3
+        ],
+        "side": 1
+      },
+      "target": 1,
+      "claim": "target_not_win"
+    },
+    {
+      "id": 98,
+      "kind": "OR_NOT_WIN",
+      "state": {
+        "p0": "0x3",
+        "p1": "0xc0",
+        "heights": [
+          2,
+          0,
+          2,
+          0
+        ],
+        "side": 0
+      },
+      "target": 1,
+      "move": 0,
+      "child": 99,
+      "claim": "target_not_win"
+    },
+    {
+      "id": 99,
+      "kind": "terminal",
+      "state": {
+        "p0": "0x7",
+        "p1": "0xc0",
+        "heights": [
+          3,
+          0,
+          2,
+          0
+        ],
+        "side": 1
+      },
+      "winner": 0,
+      "claim": "target_not_win"
+    },
+    {
+      "id": 100,
+      "kind": "OR_NOT_WIN",
+      "state": {
+        "p0": "0x3",
+        "p1": "0x240",
+        "heights": [
+          2,
+          0,
+          1,
+          1
+        ],
+        "side": 0
+      },
+      "target": 1,
+      "move": 0,
+      "child": 101,
+      "claim": "target_not_win"
+    },
+    {
+      "id": 101,
+      "kind": "terminal",
+      "state": {
+        "p0": "0x7",
+        "p1": "0x240",
+        "heights": [
+          3,
+          0,
+          1,
+          1
+        ],
+        "side": 1
+      },
+      "winner": 0,
+      "claim": "target_not_win"
+    },
+    {
+      "id": 102,
+      "kind": "OR_NOT_WIN",
+      "state": {
+        "p0": "0x1",
+        "p1": "0x200",
+        "heights": [
+          1,
+          0,
+          0,
+          1
+        ],
+        "side": 0
+      },
+      "target": 1,
+      "move": 0,
+      "child": 103,
+      "claim": "target_not_win"
+    },
+    {
+      "id": 103,
+      "kind": "AND_NOT_WIN",
+      "state": {
+        "p0": "0x3",
+        "p1": "0x200",
+        "heights": [
+          2,
+          0,
+          0,
+          1
+        ],
+        "side": 1
+      },
+      "target": 1,
+      "children": [
+        {
+          "move": 0,
+          "child": 104
+        },
+        {
+          "move": 1,
+          "child": 76
+        },
+        {
+          "move": 2,
+          "child": 100
+        },
+        {
+          "move": 3,
+          "child": 112
+        }
+      ],
+      "claim": "target_not_win"
+    },
+    {
+      "id": 104,
+      "kind": "OR_NOT_WIN",
+      "state": {
+        "p0": "0x3",
+        "p1": "0x204",
+        "heights": [
+          3,
+          0,
+          0,
+          1
+        ],
+        "side": 0
+      },
+      "target": 1,
+      "move": 1,
+      "child": 105,
+      "claim": "target_not_win"
+    },
+    {
+      "id": 105,
+      "kind": "AND_NOT_WIN",
+      "state": {
+        "p0": "0xb",
+        "p1": "0x204",
+        "heights": [
+          3,
+          1,
+          0,
+          1
+        ],
+        "side": 1
+      },
+      "target": 1,
+      "children": [
+        {
+          "move": 1,
+          "child": 106
+        },
+        {
+          "move": 2,
+          "child": 108
+        },
+        {
+          "move": 3,
+          "child": 110
+        }
+      ],
+      "claim": "target_not_win"
+    },
+    {
+      "id": 106,
+      "kind": "OR_NOT_WIN",
+      "state": {
+        "p0": "0xb",
+        "p1": "0x214",
+        "heights": [
+          3,
+          2,
+          0,
+          1
+        ],
+        "side": 0
+      },
+      "target": 1,
+      "move": 2,
+      "child": 107,
+      "claim": "target_not_win"
+    },
+    {
+      "id": 107,
+      "kind": "terminal",
+      "state": {
+        "p0": "0x4b",
+        "p1": "0x214",
+        "heights": [
+          3,
+          2,
+          1,
+          1
+        ],
+        "side": 1
+      },
+      "winner": 0,
+      "claim": "target_not_win"
+    },
+    {
+      "id": 108,
+      "kind": "OR_NOT_WIN",
+      "state": {
+        "p0": "0xb",
+        "p1": "0x244",
+        "heights": [
+          3,
+          1,
+          1,
+          1
+        ],
+        "side": 0
+      },
+      "target": 1,
+      "move": 1,
+      "child": 109,
+      "claim": "target_not_win"
+    },
+    {
+      "id": 109,
+      "kind": "macro_double_opponent_threats",
+      "state": {
+        "p0": "0x1b",
+        "p1": "0x244",
+        "heights": [
+          3,
+          2,
+          1,
+          1
+        ],
+        "side": 1
+      },
+      "target": 1,
+      "winning_columns": [
+        1,
+        2
+      ],
+      "claim": "target_not_win"
+    },
+    {
+      "id": 110,
+      "kind": "OR_NOT_WIN",
+      "state": {
+        "p0": "0xb",
+        "p1": "0x604",
+        "heights": [
+          3,
+          1,
+          0,
+          2
+        ],
+        "side": 0
+      },
+      "target": 1,
+      "move": 2,
+      "child": 111,
+      "claim": "target_not_win"
+    },
+    {
+      "id": 111,
+      "kind": "terminal",
+      "state": {
+        "p0": "0x4b",
+        "p1": "0x604",
+        "heights": [
+          3,
+          1,
+          1,
+          2
+        ],
+        "side": 1
+      },
+      "winner": 0,
+      "claim": "target_not_win"
+    },
+    {
+      "id": 112,
+      "kind": "OR_NOT_WIN",
+      "state": {
+        "p0": "0x3",
+        "p1": "0x600",
+        "heights": [
+          2,
+          0,
+          0,
+          2
+        ],
+        "side": 0
+      },
+      "target": 1,
+      "move": 0,
+      "child": 113,
+      "claim": "target_not_win"
+    },
+    {
+      "id": 113,
+      "kind": "terminal",
+      "state": {
+        "p0": "0x7",
+        "p1": "0x600",
+        "heights": [
+          3,
+          0,
+          0,
+          2
+        ],
+        "side": 1
+      },
+      "winner": 0,
+      "claim": "target_not_win"
+    }
+  ],
+  "sha256": "8614c9a5ebb337abb91f6af65615e00a2c61a87a066d2396e1dff01db8fd730f"
+}

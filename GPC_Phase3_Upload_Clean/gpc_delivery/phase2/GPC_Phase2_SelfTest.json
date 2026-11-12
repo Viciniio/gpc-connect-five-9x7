@@ -1,0 +1,66 @@
+{
+  "4x3_connect3": {
+    "root_wdl_from_first_player_view": "P0_WIN",
+    "exact_nodes": 462,
+    "cache": "CacheInfo(hits=378, misses=462, maxsize=None, currsize=462)",
+    "tactic_hits": {
+      "double_threat_fork": 39,
+      "no_safe_reply": 43,
+      "immediate_win": 88
+    },
+    "exhaustive_tactical_audit": {
+      "column_theorem_vs_naive_states": 2323,
+      "states_with_forced_reply_restriction": 1118,
+      "double_threat_fork_states": 306,
+      "no_safe_reply_states": 323,
+      "immediate_win_states": 1288,
+      "states_enumerated": 3587,
+      "solver_nodes": 3329
+    },
+    "certificates": {
+      "0": {
+        "claim": "target_win",
+        "nodes": 66,
+        "verifier": "verified 66 nodes",
+        "sha256": "bdd91140e176fa40a45de23d3168340a8c938bb57de4635647848fc4fa7dfea0"
+      },
+      "1": {
+        "claim": "target_not_win",
+        "nodes": 114,
+        "verifier": "verified 114 nodes",
+        "sha256": "8614c9a5ebb337abb91f6af65615e00a2c61a87a066d2396e1dff01db8fd730f"
+      }
+    }
+  },
+  "4x4_connect4": {
+    "root_wdl_from_first_player_view": "DRAW",
+    "exact_nodes_with_tactics": 52229,
+    "exact_nodes_without_tactics": 73658,
+    "unpruned_minimax_agreement": "passed",
+    "tactic_hits": {
+      "no_safe_reply": 1041,
+      "double_threat_fork": 436,
+      "immediate_win": 618
+    },
+    "certificates": {
+      "0": {
+        "claim": "target_not_win",
+        "nodes": 1862,
+        "verifier": "verified 1862 nodes",
+        "sha256": "5d9026b5870ef62a5fbd75c39328d4261c8339b3bfcc6d12fa7f78972e042f93"
+      },
+      "1": {
+        "claim": "target_not_win",
+        "nodes": 1482,
+        "verifier": "verified 1482 nodes",
+        "sha256": "4bb052807bd11d8619c6b581811b98a7da850139069547d13c36a3a25dde1571"
+      }
+    },
+    "tamper_rejection_test": "passed"
+  },
+  "target_geometry": {
+    "board": "9x7 Connect-5",
+    "winning_segments": 92
+  },
+  "elapsed_seconds": 3.145
+}

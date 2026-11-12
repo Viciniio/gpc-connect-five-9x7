@@ -1,0 +1,125 @@
+name: GPC Phase 3 — Distributed Mathematical Proof
+
+concurrency:
+  group: gpc-phase3-global-proof
+  cancel-in-progress: false
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/gpc-phase3.yml'
+      - 'src/**'
+      - 'phase1/**'
+      - 'phase2/**'
+      - 'scripts/**'
+      - 'docs/**'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  prepare-checkpoint-release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Initialize persistent checkpoint release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          if ! gh release view gpc-phase3-checkpoints >/dev/null 2>&1; then
+            gh release create gpc-phase3-checkpoints \
+              --title 'GPC Phase 3 — Persistent DFPN Checkpoints' \
+              --notes 'Persistent, task-bound DFPN snapshots and independently verified branch certificates. A game result is only reported when a full root GPC-ANDOR certificate verifies.'
+          fi
+
+  distributed-proof-search:
+    needs: prepare-checkpoint-release
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    strategy:
+      fail-fast: false
+      max-parallel: 20
+      matrix:
+        group: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - name: Checkout proof project
+        uses: actions/checkout@v4
+
+      - name: Build persistent native DFPN worker
+        run: |
+          mkdir -p build out
+          g++ -O3 -DNDEBUG -std=c++17 -pthread \
+            src/gravity_watcher_native.cpp -o build/gpc_worker
+
+      - name: Search four independent obligations on this 4-vCPU runner
+        run: |
+          python3 scripts/worker_batch.py \
+            --group '${{ matrix.group }}' \
+            --budget-seconds 18400 \
+            --slice-ms 120000 \
+            --node-limit 50000000 \
+            --max-entries 4000000
+
+      - name: Preserve branch results and proof certificates for aggregation
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: gpc-group-${{ matrix.group }}
+          path: |
+            out/result-*.json
+            out/cert-*.json
+            out/log-*.txt
+          if-no-files-found: warn
+          retention-days: 90
+
+  aggregate-root-proof:
+    if: always()
+    needs: distributed-proof-search
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout proof project
+        uses: actions/checkout@v4
+
+      - name: Download all available worker results
+        uses: actions/download-artifact@v4
+        with:
+          pattern: gpc-group-*
+          path: out
+          merge-multiple: true
+
+      - name: Independently assemble and verify the empty-board result
+        id: aggregate
+        continue-on-error: true
+        run: |
+          mkdir -p final
+          python3 scripts/aggregate_root.py --results out --output final | tee final/aggregate.log
+
+      - name: Upload root certificates and game-value report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: gpc-root-proof-report
+          path: final/**
+          if-no-files-found: warn
+          retention-days: 90
+
+      - name: Report proof status
+        if: always()
+        run: |
+          if [ -f final/game_value_report.json ]; then
+            python3 - <<'PY'
+          import json
+          d=json.load(open('final/game_value_report.json', encoding='utf-8'))
+          print('GPC mathematical status:', d.get('outcome'))
+          print('Branch certificates:', d.get('branch_certificates'))
+          print('Root certificates:', d.get('root_certificates'))
+          PY
+          else
+            echo 'UNRESOLVED: no complete root certificate was assembled.'
+          fi

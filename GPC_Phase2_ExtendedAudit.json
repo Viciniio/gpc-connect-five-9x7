@@ -1,0 +1,20 @@
+{
+  "format": "GPC-EXTENDED-AUDIT-1",
+  "4x4_connect4_prefix": {
+    "scope": "all symmetry-canonical legal states through ply 10",
+    "states_including_terminal": 16737,
+    "nonterminal_comparisons": 16205,
+    "result": "all fast-vs-naive response sets matched",
+    "seconds": 1.114
+  },
+  "9x7_connect5_random_trajectories": {
+    "seed": 20261109,
+    "sampling": "uniform random legal column at each turn; stop on first win/full board",
+    "games": 250,
+    "nonterminal_state_visits_compared": 9736,
+    "minimum_visits_per_game": 11,
+    "maximum_visits_per_game": 63,
+    "result": "all fast-vs-naive response sets matched",
+    "seconds": 11.8
+  }
+}

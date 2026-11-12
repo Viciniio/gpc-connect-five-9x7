@@ -1,0 +1,7 @@
+/build/
+/out/
+*.bin
+*.checkpoint
+*.checkpoint.tmp
+__pycache__/
+*.py[cod]
