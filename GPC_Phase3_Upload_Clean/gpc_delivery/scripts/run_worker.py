@@ -5,7 +5,7 @@ import argparse, json, os, shutil, subprocess, sys, threading, time
 from pathlib import Path
 
 TAG = "gpc-phase3-checkpoints"
-UPLOAD_INTERVAL = 600
+UPLOAD_INTERVAL = 300
 ROOT = Path(__file__).resolve().parents[1]
 
 
@@ -170,6 +170,10 @@ def main():
     def uploader():
         while not stop.wait(UPLOAD_INTERVAL):
             upload_checkpoint(False)
+            # Publish the latest slice summary so root proof can be assembled early.
+            if result_path.exists():
+                if not gh_upload(result_path):
+                    print(f"WARN progress result upload failed for {shard}", flush=True)
 
     thread=threading.Thread(target=uploader,daemon=True)
     thread.start()
