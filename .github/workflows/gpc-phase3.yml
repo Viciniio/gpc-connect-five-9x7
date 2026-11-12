@@ -24,6 +24,8 @@ jobs:
   prepare-checkpoint-release:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout repository before using gh release
+        uses: actions/checkout@v4
       - name: Initialize persistent checkpoint release
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -109,13 +111,7 @@ jobs:
         working-directory: GPC_Phase3_Upload_Clean/gpc_delivery
         run: |
           if [ -f final/game_value_report.json ]; then
-            python3 - -
-          import json
-          d=json.load(open('final/game_value_report.json', encoding='utf-8'))
-          print('GPC mathematical status:', d.get('outcome'))
-          print('Branch certificates:', d.get('branch_certificates'))
-          print('Root certificates:', d.get('root_certificates'))
-          -
+            python3 -c "import json; d=json.load(open('final/game_value_report.json', encoding='utf-8')); print('GPC mathematical status:', d.get('outcome')); print('Branch certificates:', d.get('branch_certificates')); print('Root certificates:', d.get('root_certificates'))"
           else
             echo 'UNRESOLVED: no complete root certificate was assembled.'
           fi
