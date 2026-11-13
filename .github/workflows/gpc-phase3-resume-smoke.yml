@@ -16,8 +16,10 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
-      - name: Checkout proof project
+           - name: Checkout proof project
         uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GPC_PUSH_TOKEN }}
 
       - name: Patch checkpoint migration and Phase 3 worker limits
         shell: bash
