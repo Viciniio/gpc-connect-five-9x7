@@ -828,10 +828,10 @@ private:
             in.read(reinterpret_cast<char*>(&h), sizeof(h));
             const auto rp=split128(root.pos), rm=split128(root.mask);
             if (!in || std::memcmp(h.magic,"GPCDFPN1",8)!=0 || h.version!=1 ||
-                h.target!=static_cast<std::uint32_t>(target) || h.capacity!=capacity ||
+                h.target!=static_cast<std::uint32_t>(target) || h.capacity>capacity ||
                 h.root_pos_lo!=rp.first || h.root_pos_hi!=rp.second ||
                 h.root_mask_lo!=rm.first || h.root_mask_hi!=rm.second ||
-                h.entries>capacity) return false;
+                h.entries>h.capacity || h.entries>capacity) return false;
             if (slots.empty()) configure(capacity);
             if (max_entries!=capacity) return false;
             for (std::uint64_t i=0;i<h.entries;i++) {
@@ -1985,7 +1985,49 @@ bool Engine::watcher_memory_self_test(std::ostream& out) {
     out << (bounded && all_solved_retained ? "PASS" : "FAIL")
         << " DFPN cache compaction preserves every solved proof/refutation while trimming unresolved hints"
         << " (before=" << before << ", after=" << after << ", solved=" << solved_keys.size() << ")\n";
-    return bounded && all_solved_retained;
+    const std::string checkpoint_path = "gpc-dfpn-capacity-upgrade-selftest.bin";
+    std::remove(checkpoint_path.c_str());
+    DfpnMemoTable legacy;
+    legacy.configure(64);
+    std::vector<std::pair<ExactKey, DfpnMemoValue>> records;
+    bool migration_ok = true;
+    for (std::uint64_t i = 1; i <= 40; ++i) {
+        const ExactKey key{U64(i), U64(i) | (U64(1) << 100)};
+        DfpnMemoValue value{};
+        value.pn = i + 1;
+        value.dn = i + 101;
+        value.best = static_cast<std::int8_t>(i % W);
+        value.frontier = false;
+        value.frontier_remaining = -1;
+        if (!legacy.insert(key, value)) {
+            migration_ok = false;
+            break;
+        }
+        records.emplace_back(key, value);
+    }
+    const State empty_root{};
+    migration_ok = migration_ok && records.size() == 40 &&
+        legacy.save_checkpoint(checkpoint_path, empty_root, 1);
+
+    DfpnMemoTable expanded;
+    expanded.configure(128);
+    migration_ok = migration_ok &&
+        expanded.load_checkpoint(checkpoint_path, empty_root, 1, 128) &&
+        expanded.size() == records.size();
+    if (migration_ok) {
+        for (const auto& item : records) {
+            const DfpnMemoValue* loaded = expanded.find(item.first);
+            if (!loaded || loaded->pn != item.second.pn ||
+                loaded->dn != item.second.dn || loaded->best != item.second.best) {
+                migration_ok = false;
+                break;
+            }
+        }
+    }
+    std::remove(checkpoint_path.c_str());
+    out << (migration_ok ? "PASS" : "FAIL")
+        << " DFPN checkpoint migration preserves 40 entries from capacity 64 into capacity 128\n";
+    return bounded && all_solved_retained && migration_ok;
 }
 
 void print_board(const State& s) {

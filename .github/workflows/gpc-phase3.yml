@@ -64,10 +64,10 @@ jobs:
         run: |
           python3 scripts/worker_batch.py \
             --group '${{ matrix.group }}' \
-            --budget-seconds 18400 \
+            --budget-seconds 20400 \
             --slice-ms 300000 \
             --node-limit 200000000 \
-            --max-entries 4000000
+            --max-entries 8000000
       - name: Preserve branch results and proof certificates
         if: always()
         uses: actions/upload-artifact@v4
