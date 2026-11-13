@@ -19,89 +19,11 @@ jobs:
       - name: Checkout proof project
         uses: actions/checkout@v4
 
-      - name: Patch safe checkpoint migration and increase the next run capacity
+      - name: Patch checkpoint migration and Phase 3 worker limits
         shell: bash
         run: |
           set -euo pipefail
-          python3 - &lt;&lt;'PY'
-          from pathlib import Path
-
-          source_path = Path("GPC_Phase3_Upload_Clean/gpc_delivery/src/gravity_watcher_native.cpp")
-          source = source_path.read_text(encoding="utf-8")
-
-          old_validation = """h.target!=static_cast&lt;std::uint32_t&gt;(target) || h.capacity!=capacity ||
-                          h.root_pos_lo!=rp.first || h.root_pos_hi!=rp.second ||
-                          h.root_mask_lo!=rm.first || h.root_mask_hi!=rm.second ||
-                          h.entries>capacity"""
-          new_validation = """h.target!=static_cast&lt;std::uint32_t&gt;(target) || h.capacity>capacity ||
-                          h.root_pos_lo!=rp.first || h.root_pos_hi!=rp.second ||
-                          h.root_mask_lo!=rm.first || h.root_mask_hi!=rm.second ||
-                          h.entries>h.capacity || h.entries>capacity"""
-          if source.count(old_validation) != 1:
-              raise SystemExit("Expected one exact old checkpoint-capacity guard; refusing an unsafe patch")
-          source = source.replace(old_validation, new_validation)
-
-          old_tail = "    return bounded && all_solved_retained;\n}"
-          new_tail = r'''    const std::string checkpoint_path = "gpc-dfpn-capacity-upgrade-selftest.bin";
-              std::remove(checkpoint_path.c_str());
-              DfpnMemoTable legacy;
-              legacy.configure(64);
-              std::vector&lt;std::pair&lt;ExactKey, DfpnMemoValue&gt;&gt; records;
-              bool migration_ok = true;
-              for (std::uint64_t i = 1; i &lt;= 40; ++i) {
-                  const ExactKey key{U64(i), U64(i) | (U64(1) &lt;&lt; 100)};
-                  DfpnMemoValue value{};
-                  value.pn = i + 1;
-                  value.dn = i + 101;
-                  value.best = static_cast&lt;std::int8_t&gt;(i % W);
-                  value.frontier = false;
-                  value.frontier_remaining = -1;
-                  if (!legacy.insert(key, value)) {
-                      migration_ok = false;
-                      break;
-                  }
-                  records.emplace_back(key, value);
-              }
-              const State empty_root{};
-              migration_ok = migration_ok && records.size() == 40 &&
-                  legacy.save_checkpoint(checkpoint_path, empty_root, 1);
-
-              DfpnMemoTable expanded;
-              expanded.configure(128);
-              migration_ok = migration_ok &&
-                  expanded.load_checkpoint(checkpoint_path, empty_root, 1, 128) &&
-                  expanded.size() == records.size();
-              if (migration_ok) {
-                  for (const auto& item : records) {
-                      const DfpnMemoValue* loaded = expanded.find(item.first);
-                      if (!loaded || loaded->pn != item.second.pn ||
-                          loaded->dn != item.second.dn || loaded->best != item.second.best) {
-                          migration_ok = false;
-                          break;
-                      }
-                  }
-              }
-              std::remove(checkpoint_path.c_str());
-              out &lt;&lt; (migration_ok ? "PASS" : "FAIL")
-                  &lt;&lt; " DFPN checkpoint migration preserves 40 entries from capacity 64 into capacity 128\n";
-              return bounded && all_solved_retained && migration_ok;
-          }'''
-          if source.count(old_tail) != 1:
-              raise SystemExit("Expected one exact watcher_memory_self_test return tail; refusing an unsafe patch")
-          source = source.replace(old_tail, new_tail)
-          source_path.write_text(source, encoding="utf-8")
-
-          workflow_path = Path(".github/workflows/gpc-phase3.yml")
-          workflow = workflow_path.read_text(encoding="utf-8")
-          if workflow.count("--max-entries 4000000") != 1:
-              raise SystemExit("Expected one 4m DFPN capacity setting; refusing an unsafe workflow patch")
-          if workflow.count("--budget-seconds 18400") != 1:
-              raise SystemExit("Expected one 18400-second worker budget; refusing an unsafe workflow patch")
-          workflow = workflow.replace("--max-entries 4000000", "--max-entries 8000000")
-          workflow = workflow.replace("--budget-seconds 18400", "--budget-seconds 20400")
-          workflow_path.write_text(workflow, encoding="utf-8")
-          print("Patched checkpoint compatibility, migration self-test, and Phase 3 worker limits.")
-          PY
+ python3 -c "import base64;exec(base64.b64decode('ZnJvbSBwYXRobGliIGltcG9ydCBQYXRoCgpzb3VyY2VfcGF0aCA9IFBhdGgoIkdQQ19QaGFzZTNfVXBsb2FkX0NsZWFuL2dwY19kZWxpdmVyeS9zcmMvZ3Jhdml0eV93YXRjaGVyX25hdGl2ZS5jcHAiKQpzb3VyY2UgPSBzb3VyY2VfcGF0aC5yZWFkX3RleHQoZW5jb2Rpbmc9InV0Zi04IikKCmlmIHNvdXJjZS5jb3VudCgiaC5jYXBhY2l0eSE9Y2FwYWNpdHkiKSAhPSAxOgogICAgcmFpc2UgU3lzdGVtRXhpdCgiRXhwZWN0ZWQgZXhhY3RseSBvbmUgb2xkIGNoZWNrcG9pbnQgY2FwYWNpdHkgZXF1YWxpdHkgZ3VhcmQiKQpzb3VyY2UgPSBzb3VyY2UucmVwbGFjZSgiaC5jYXBhY2l0eSE9Y2FwYWNpdHkiLCAiaC5jYXBhY2l0eT5jYXBhY2l0eSIsIDEpCgppZiBzb3VyY2UuY291bnQoImguZW50cmllcz5jYXBhY2l0eSIpICE9IDE6CiAgICByYWlzZSBTeXN0ZW1FeGl0KCJFeHBlY3RlZCBleGFjdGx5IG9uZSBjaGVja3BvaW50IGVudHJpZXMgYm91bmQiKQpzb3VyY2UgPSBzb3VyY2UucmVwbGFjZSgiaC5lbnRyaWVzPmNhcGFjaXR5IiwgImguZW50cmllcz5oLmNhcGFjaXR5IHx8IGguZW50cmllcz5jYXBhY2l0eSIsIDEpCgpvbGRfdGFpbCA9ICIgICAgcmV0dXJuIGJvdW5kZWQgJiYgYWxsX3NvbHZlZF9yZXRhaW5lZDtcbn0iCm5ld190YWlsID0gcicnJyAgICBjb25zdCBzdGQ6OnN0cmluZyBjaGVja3BvaW50X3BhdGggPSAiZ3BjLWRmcG4tY2FwYWNpdHktdXBncmFkZS1zZWxmdGVzdC5iaW4iOwogICAgc3RkOjpyZW1vdmUoY2hlY2twb2ludF9wYXRoLmNfc3RyKCkpOwogICAgRGZwbk1lbW9UYWJsZSBsZWdhY3k7CiAgICBsZWdhY3kuY29uZmlndXJlKDY0KTsKICAgIHN0ZDo6dmVjdG9yPHN0ZDo6cGFpcjxFeGFjdEtleSwgRGZwbk1lbW9WYWx1ZT4+IHJlY29yZHM7CiAgICBib29sIG1pZ3JhdGlvbl9vayA9IHRydWU7CiAgICBmb3IgKHN0ZDo6dWludDY0X3QgaSA9IDE7IGkgPD0gNDA7ICsraSkgewogICAgICAgIGNvbnN0IEV4YWN0S2V5IGtleXtVNjQoaSksIFU2NChpKSB8IChVNjQoMSkgPDwgMTAwKX07CiAgICAgICAgRGZwbk1lbW9WYWx1ZSB2YWx1ZXt9OwogICAgICAgIHZhbHVlLnBuID0gaSArIDE7CiAgICAgICAgdmFsdWUuZG4gPSBpICsgMTAxOwogICAgICAgIHZhbHVlLmJlc3QgPSBzdGF0aWNfY2FzdDxzdGQ6OmludDhfdD4oaSAlIFcpOwogICAgICAgIHZhbHVlLmZyb250aWVyID0gZmFsc2U7CiAgICAgICAgdmFsdWUuZnJvbnRpZXJfcmVtYWluaW5nID0gLTE7CiAgICAgICAgaWYgKCFsZWdhY3kuaW5zZXJ0KGtleSwgdmFsdWUpKSB7CiAgICAgICAgICAgIG1pZ3JhdGlvbl9vayA9IGZhbHNlOwogICAgICAgICAgICBicmVhazsKICAgICAgICB9CiAgICAgICAgcmVjb3Jkcy5lbXBsYWNlX2JhY2soa2V5LCB2YWx1ZSk7CiAgICB9CiAgICBjb25zdCBTdGF0ZSBlbXB0eV9yb290e307CiAgICBtaWdyYXRpb25fb2sgPSBtaWdyYXRpb25fb2sgJiYgcmVjb3Jkcy5zaXplKCkgPT0gNDAgJiYKICAgICAgICBsZWdhY3kuc2F2ZV9jaGVja3BvaW50KGNoZWNrcG9pbnRfcGF0aCwgZW1wdHlfcm9vdCwgMSk7CgogICAgRGZwbk1lbW9UYWJsZSBleHBhbmRlZDsKICAgIGV4cGFuZGVkLmNvbmZpZ3VyZSgxMjgpOwogICAgbWlncmF0aW9uX29rID0gbWlncmF0aW9uX29rICYmCiAgICAgICAgZXhwYW5kZWQubG9hZF9jaGVja3BvaW50KGNoZWNrcG9pbnRfcGF0aCwgZW1wdHlfcm9vdCwgMSwgMTI4KSAmJgogICAgICAgIGV4cGFuZGVkLnNpemUoKSA9PSByZWNvcmRzLnNpemUoKTsKICAgIGlmIChtaWdyYXRpb25fb2spIHsKICAgICAgICBmb3IgKGNvbnN0IGF1dG8mIGl0ZW0gOiByZWNvcmRzKSB7CiAgICAgICAgICAgIGNvbnN0IERmcG5NZW1vVmFsdWUqIGxvYWRlZCA9IGV4cGFuZGVkLmZpbmQoaXRlbS5maXJzdCk7CiAgICAgICAgICAgIGlmICghbG9hZGVkIHx8IGxvYWRlZC0+cG4gIT0gaXRlbS5zZWNvbmQucG4gfHwKICAgICAgICAgICAgICAgIGxvYWRlZC0+ZG4gIT0gaXRlbS5zZWNvbmQuZG4gfHwgbG9hZGVkLT5iZXN0ICE9IGl0ZW0uc2Vjb25kLmJlc3QpIHsKICAgICAgICAgICAgICAgIG1pZ3JhdGlvbl9vayA9IGZhbHNlOwogICAgICAgICAgICAgICAgYnJlYWs7CiAgICAgICAgICAgIH0KICAgICAgICB9CiAgICB9CiAgICBzdGQ6OnJlbW92ZShjaGVja3BvaW50X3BhdGguY19zdHIoKSk7CiAgICBvdXQgPDwgKG1pZ3JhdGlvbl9vayA/ICJQQVNTIiA6ICJGQUlMIikKICAgICAgICA8PCAiIERGUE4gY2hlY2twb2ludCBtaWdyYXRpb24gcHJlc2VydmVzIDQwIGVudHJpZXMgZnJvbSBjYXBhY2l0eSA2NCBpbnRvIGNhcGFjaXR5IDEyOFxuIjsKICAgIHJldHVybiBib3VuZGVkICYmIGFsbF9zb2x2ZWRfcmV0YWluZWQgJiYgbWlncmF0aW9uX29rOwp9JycnCmlmIHNvdXJjZS5jb3VudChvbGRfdGFpbCkgIT0gMToKICAgIHJhaXNlIFN5c3RlbUV4aXQoIkV4cGVjdGVkIG9uZSBzZWxmLXRlc3QgcmV0dXJuIHRhaWwiKQpzb3VyY2UgPSBzb3VyY2UucmVwbGFjZShvbGRfdGFpbCwgbmV3X3RhaWwsIDEpCnNvdXJjZV9wYXRoLndyaXRlX3RleHQoc291cmNlLCBlbmNvZGluZz0idXRmLTgiKQoKd29ya2Zsb3dfcGF0aCA9IFBhdGgoIi5naXRodWIvd29ya2Zsb3dzL2dwYy1waGFzZTMueW1sIikKd29ya2Zsb3cgPSB3b3JrZmxvd19wYXRoLnJlYWRfdGV4dChlbmNvZGluZz0idXRmLTgiKQppZiB3b3JrZmxvdy5jb3VudCgiLS1tYXgtZW50cmllcyA0MDAwMDAwIikgIT0gMToKICAgIHJhaXNlIFN5c3RlbUV4aXQoIkV4cGVjdGVkIGV4YWN0bHkgb25lIDRtIERGUE4gY2FwYWNpdHkgc2V0dGluZyIpCmlmIHdvcmtmbG93LmNvdW50KCItLWJ1ZGdldC1zZWNvbmRzIDE4NDAwIikgIT0gMToKICAgIHJhaXNlIFN5c3RlbUV4aXQoIkV4cGVjdGVkIGV4YWN0bHkgb25lIDE4NDAwLXNlY29uZCB3b3JrZXIgYnVkZ2V0IikKd29ya2Zsb3cgPSB3b3JrZmxvdy5yZXBsYWNlKCItLW1heC1lbnRyaWVzIDQwMDAwMDAiLCAiLS1tYXgtZW50cmllcyA4MDAwMDAwIiwgMSkKd29ya2Zsb3cgPSB3b3JrZmxvdy5yZXBsYWNlKCItLWJ1ZGdldC1zZWNvbmRzIDE4NDAwIiwgIi0tYnVkZ2V0LXNlY29uZHMgMjA0MDAiLCAxKQp3b3JrZmxvd19wYXRoLndyaXRlX3RleHQod29ya2Zsb3csIGVuY29kaW5nPSJ1dGYtOCIpCnByaW50KCJQYXRjaGVkIGNoZWNrcG9pbnQgY29tcGF0aWJpbGl0eSwgbWlncmF0aW9uIHNlbGYtdGVzdCwgYW5kIFBoYXNlIDMgd29ya2VyIGxpbWl0cy4iKQo='))"
 
       - name: Compile worker and run memory plus checkpoint migration tests
         working-directory: GPC_Phase3_Upload_Clean/gpc_delivery
@@ -111,7 +33,7 @@ jobs:
           g++ -O3 -DNDEBUG -std=c++17 -pthread src/gravity_watcher_native.cpp -o build/gpc_worker
           ./build/gpc_worker --watcher-memory-selftest
 
-      - name: Resume one real 4m checkpoint with an 8m table
+      - name: Resume one real checkpoint using the expanded table
         working-directory: GPC_Phase3_Upload_Clean/gpc_delivery
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -119,19 +41,12 @@ jobs:
         run: |
           set -euo pipefail
           python3 -m py_compile scripts/run_worker.py scripts/make_certificate_from_dfpn.py
-          python3 scripts/run_worker.py \
-            --target 0 --first 0 --second 0 \
-            --budget-seconds 180 \
-            --slice-ms 60000 \
-            --node-limit 50000000 \
-            --max-entries 8000000 | tee out/resume.stdout
+          python3 scripts/run_worker.py --target 0 --first 0 --second 0 --budget-seconds 180 --slice-ms 60000 --node-limit 50000000 --max-entries 8000000 | tee out/resume.stdout
           grep -F "RESUME t0-f0-s0 generation=" out/resume.stdout
-          echo '--- RESUMED WORKER LOG ---'
           cat out/log-t0-f0-s0.txt
-          echo '--- RESULT ---'
           cat out/result-t0-f0-s0.json
 
-      - name: Commit verified code and workflow changes to the feature branch
+      - name: Commit patched source and Phase 3 settings to the feature branch
         run: |
           set -euo pipefail
           git config user.name "github-actions[bot]"
