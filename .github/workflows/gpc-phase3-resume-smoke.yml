@@ -1,3 +1,20 @@
+name: GPC Phase 3 — checkpoint capacity migration smoke
+
+on:
+  push:
+    branches: [phase3-resume-capacity]
+    paths:
+      - '.github/workflows/gpc-phase3-resume-smoke.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: write
+
+jobs:
+  migrate-and-smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - name: Checkout proof project
         uses: actions/checkout@v4
