@@ -1,0 +1,154 @@
+name: GPC Phase 3 — checkpoint capacity migration smoke
+
+on:
+  push:
+    branches: [phase3-resume-capacity]
+    paths:
+      - '.github/workflows/gpc-phase3-resume-smoke.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: write
+
+jobs:
+  migrate-and-smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout proof project
+        uses: actions/checkout@v4
+
+      - name: Patch safe checkpoint migration and increase the next run capacity
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - &lt;&lt;'PY'
+          from pathlib import Path
+
+          source_path = Path("GPC_Phase3_Upload_Clean/gpc_delivery/src/gravity_watcher_native.cpp")
+          source = source_path.read_text(encoding="utf-8")
+
+          old_validation = """h.target!=static_cast&lt;std::uint32_t&gt;(target) || h.capacity!=capacity ||
+                          h.root_pos_lo!=rp.first || h.root_pos_hi!=rp.second ||
+                          h.root_mask_lo!=rm.first || h.root_mask_hi!=rm.second ||
+                          h.entries>capacity"""
+          new_validation = """h.target!=static_cast&lt;std::uint32_t&gt;(target) || h.capacity>capacity ||
+                          h.root_pos_lo!=rp.first || h.root_pos_hi!=rp.second ||
+                          h.root_mask_lo!=rm.first || h.root_mask_hi!=rm.second ||
+                          h.entries>h.capacity || h.entries>capacity"""
+          if source.count(old_validation) != 1:
+              raise SystemExit("Expected one exact old checkpoint-capacity guard; refusing an unsafe patch")
+          source = source.replace(old_validation, new_validation)
+
+          old_tail = "    return bounded && all_solved_retained;\n}"
+          new_tail = r'''    const std::string checkpoint_path = "gpc-dfpn-capacity-upgrade-selftest.bin";
+              std::remove(checkpoint_path.c_str());
+              DfpnMemoTable legacy;
+              legacy.configure(64);
+              std::vector&lt;std::pair&lt;ExactKey, DfpnMemoValue&gt;&gt; records;
+              bool migration_ok = true;
+              for (std::uint64_t i = 1; i &lt;= 40; ++i) {
+                  const ExactKey key{U64(i), U64(i) | (U64(1) &lt;&lt; 100)};
+                  DfpnMemoValue value{};
+                  value.pn = i + 1;
+                  value.dn = i + 101;
+                  value.best = static_cast&lt;std::int8_t&gt;(i % W);
+                  value.frontier = false;
+                  value.frontier_remaining = -1;
+                  if (!legacy.insert(key, value)) {
+                      migration_ok = false;
+                      break;
+                  }
+                  records.emplace_back(key, value);
+              }
+              const State empty_root{};
+              migration_ok = migration_ok && records.size() == 40 &&
+                  legacy.save_checkpoint(checkpoint_path, empty_root, 1);
+
+              DfpnMemoTable expanded;
+              expanded.configure(128);
+              migration_ok = migration_ok &&
+                  expanded.load_checkpoint(checkpoint_path, empty_root, 1, 128) &&
+                  expanded.size() == records.size();
+              if (migration_ok) {
+                  for (const auto& item : records) {
+                      const DfpnMemoValue* loaded = expanded.find(item.first);
+                      if (!loaded || loaded->pn != item.second.pn ||
+                          loaded->dn != item.second.dn || loaded->best != item.second.best) {
+                          migration_ok = false;
+                          break;
+                      }
+                  }
+              }
+              std::remove(checkpoint_path.c_str());
+              out &lt;&lt; (migration_ok ? "PASS" : "FAIL")
+                  &lt;&lt; " DFPN checkpoint migration preserves 40 entries from capacity 64 into capacity 128\n";
+              return bounded && all_solved_retained && migration_ok;
+          }'''
+          if source.count(old_tail) != 1:
+              raise SystemExit("Expected one exact watcher_memory_self_test return tail; refusing an unsafe patch")
+          source = source.replace(old_tail, new_tail)
+          source_path.write_text(source, encoding="utf-8")
+
+          workflow_path = Path(".github/workflows/gpc-phase3.yml")
+          workflow = workflow_path.read_text(encoding="utf-8")
+          if workflow.count("--max-entries 4000000") != 1:
+              raise SystemExit("Expected one 4m DFPN capacity setting; refusing an unsafe workflow patch")
+          if workflow.count("--budget-seconds 18400") != 1:
+              raise SystemExit("Expected one 18400-second worker budget; refusing an unsafe workflow patch")
+          workflow = workflow.replace("--max-entries 4000000", "--max-entries 8000000")
+          workflow = workflow.replace("--budget-seconds 18400", "--budget-seconds 20400")
+          workflow_path.write_text(workflow, encoding="utf-8")
+          print("Patched checkpoint compatibility, migration self-test, and Phase 3 worker limits.")
+          PY
+
+      - name: Compile worker and run memory plus checkpoint migration tests
+        working-directory: GPC_Phase3_Upload_Clean/gpc_delivery
+        run: |
+          set -euo pipefail
+          mkdir -p build out
+          g++ -O3 -DNDEBUG -std=c++17 -pthread src/gravity_watcher_native.cpp -o build/gpc_worker
+          ./build/gpc_worker --watcher-memory-selftest
+
+      - name: Resume one real 4m checkpoint with an 8m table
+        working-directory: GPC_Phase3_Upload_Clean/gpc_delivery
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          python3 -m py_compile scripts/run_worker.py scripts/make_certificate_from_dfpn.py
+          python3 scripts/run_worker.py \
+            --target 0 --first 0 --second 0 \
+            --budget-seconds 180 \
+            --slice-ms 60000 \
+            --node-limit 50000000 \
+            --max-entries 8000000 | tee out/resume.stdout
+          grep -F "RESUME t0-f0-s0 generation=" out/resume.stdout
+          echo '--- RESUMED WORKER LOG ---'
+          cat out/log-t0-f0-s0.txt
+          echo '--- RESULT ---'
+          cat out/result-t0-f0-s0.json
+
+      - name: Commit verified code and workflow changes to the feature branch
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add GPC_Phase3_Upload_Clean/gpc_delivery/src/gravity_watcher_native.cpp .github/workflows/gpc-phase3.yml
+          git commit -m "Resume DFPN checkpoints with expanded table capacity"
+          git push origin HEAD:phase3-resume-capacity
+
+      - name: Preserve smoke-test evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: gpc-checkpoint-resume-smoke
+          path: |
+            GPC_Phase3_Upload_Clean/gpc_delivery/out/resume.stdout
+            GPC_Phase3_Upload_Clean/gpc_delivery/out/log-t0-f0-s0.txt
+            GPC_Phase3_Upload_Clean/gpc_delivery/out/result-t0-f0-s0.json
+            GPC_Phase3_Upload_Clean/gpc_delivery/out/solved-t0-f0-s0.txt
+          if-no-files-found: warn
+          retention-days: 30
